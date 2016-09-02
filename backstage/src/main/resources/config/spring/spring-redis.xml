@@ -1,0 +1,39 @@
+<beans xmlns="http://www.springframework.org/schema/beans"  
+ xmlns:context="http://www.springframework.org/schema/context"  
+ xmlns:p="http://www.springframework.org/schema/p"  
+ xmlns:mvc="http://www.springframework.org/schema/mvc"  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:schemaLocation="http://www.springframework.org/schema/beans  
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!-- redis连接池 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">  
+        <property name="maxTotal" value="${redis.maxTotal}"></property>  
+        <property name="maxIdle" value="${redis.maxIdle}"></property>  
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}"></property>  
+        <property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}"></property>  
+        <property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}"></property>  
+        <property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}"></property>  
+    </bean>  
+	<!-- SDR工厂 -->
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">  
+        <property name="poolConfig" ref="jedisPoolConfig"></property>  
+        <property name="hostName" value="${redis.host}"></property>  
+        <property name="port" value="${redis.port}"></property>
+        <!--<property name="password" value="${redis.password}"></property>  -->
+        <property name="timeout" value="${redis.timeout}"></property>  
+        <property name="usePool" value="true"></property>  
+    </bean>  
+	<!-- SDR操作模板 -->
+	<bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">  
+        <property name="connectionFactory" ref="jedisConnectionFactory"></property>
+        <!-- key用String --> 
+        <property name="keySerializer">  
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>  
+        </property>
+        <!-- value用序列化 -->
+        <property name="valueSerializer">  
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>  
+        </property>  
+    </bean>
+</beans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<configuration status="off">  
+  <appenders>  
+    <Console name="console" target="SYSTEM_OUT">  
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>  
+    </Console>  
+  </appenders>  
+  <loggers>  
+  	<AsyncLogger name="com.kino" level="info" additivity="false">
+  		<appender-ref ref="console"/>
+  	</AsyncLogger>
+    <AsyncRoot level="info">  
+      <appender-ref ref="console"/>  
+    </AsyncRoot>  
+  </loggers>  
+</configuration>
