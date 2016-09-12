@@ -34,4 +34,21 @@ public class IndexController {
 		ModelAndView result = new ModelAndView("index");
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @Title: error500
+	 * @Author：xiaoxiaofeng
+	 * @Description: 500错误页面
+	 * @param @param request
+	 * @param @param response
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throws
+	 */
+	@RequestMapping("/error500.html")
+	public ModelAndView error500(HttpServletRequest request,HttpServletResponse response){
+		ModelAndView result = new ModelAndView("error500");
+		return result;
+	}
 }

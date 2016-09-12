@@ -99,6 +99,18 @@ body {
 
 <body>
 <div class="box">
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" style="top:250px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+		    <div class="modal-dialog" style="width:300px;"> 
+		        <div class="modal-content"> 
+		            <div class="modal-body"><span style="" id="modalText">用户名或密码不能为空 !</span></div> 
+		            <div class="modal-footer"> 
+		                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+		            </div> 
+		        </div><!-- /.modal-content --> 
+		    </div><!-- /.modal --> 
+		</div>
+		
 		<div class="login-box">
 			<div class="login-title text-center">
 				<h1><small>注册</small></h1>
@@ -110,7 +122,7 @@ body {
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-							<input type="text" id="username" name="username" class="form-control" placeholder="用户名">
+							<input type="text" id="username" name="username" class="form-control" placeholder="用户名(5-10个字符只能使用英文或者数字)">
 						</div>
 					</div>
 				</div>
@@ -118,7 +130,7 @@ body {
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-							<input type="text" id="password" name="password" class="form-control" placeholder="密码">
+							<input type="password" id="password" name="password" class="form-control" placeholder="密码(5-10个字符只能使用英文或者数字)">
 						</div>
 					</div>
 				</div>
@@ -126,13 +138,13 @@ body {
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-							<input type="text" id="password" name="password" class="form-control" placeholder="确认密码">
+							<input type="password" id="confirmPassword" name="password" class="form-control" placeholder="确认密码">
 						</div>
 					</div>
 				</div>
 				<div class="form-group form-actions">
 					<div class="col-xs-4 col-xs-offset-4 ">
-						<button type="submit" class="btn btn-sm btn-info" style="background-color:#1cc09f;margin-left:200px"> 提交</button>
+						<button id="submit" type="button"  class="btn btn-sm btn-info" style="background-color:#1cc09f;margin-left:200px"> 提交</button>
 					</div>
 				</div>
 			</form>
@@ -140,6 +152,10 @@ body {
 		</div>
 	</div>
 </div>
+<script src="${rc.contextPath}/assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="${rc.contextPath}/assets/js/bootstrap.min.js"></script>
+<script src="${rc.contextPath}/js/user/register.js"></script>
 </body>
 
 </html>

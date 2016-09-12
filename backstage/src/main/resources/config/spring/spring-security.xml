@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans  xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:security="http://www.springframework.org/schema/security"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	<!-- 配置不需要验证权限的资源访问 -->
+	<security:http pattern="*.js" security="none"></security:http>
+	<security:http pattern="*.css" security="none"></security:http>
+	<security:http pattern="/user/login.html" security="none"></security:http>
+	<security:http pattern="/user/register.html" security="none"></security:http>
+	<security:http pattern="/error500.html" security="none"></security:http>
+	
+	<!-- access-denied-page="/accessDenied.jsp" 权限未通过页面-->
+	<!-- 配置http拦截 -->
+	<security:http>
+		 <!-- 设置登陆页面 login-page; 登陆成功跳转页面 default-target-url-->
+		 <security:form-login login-page='/user/login.html' default-target-url='/index.html'/>
+		 <!-- 设置登出页面 logout-url链接; 登出成功跳转 logout-success-url-->
+		 <security:logout logout-success-url="/user/login.html" logout-url=""/>
+		 <!-- 配置同账户登陆一次  invalid-session-url session失效跳转url-->
+		 <security:session-management invalid-session-url="/user/login.html">
+		 	<security:concurrency-control max-sessions="1"/>
+		 </security:session-management>
+		 <!-- 认证和授权 先认证后授权 -->
+         <security:custom-filter ref="myLoginFilter" position="FORM_LOGIN_FILTER"  />
+         <security:custom-filter ref="securityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+	</security:http>
+	
+	 <!-- 认证过滤器 -->
+    <bean id="securityFilter" class="com.ssm.backstage.security.SecurityFilterSecurityInterceptor">
+        <!-- 用户拥有的权限 -->
+        <property name="authenticationManager" ref="authenticationManager" />
+        <!-- 用户是否拥有所请求资源的权限 -->
+        <property name="accessDecisionManager" ref="securityAccessDecisionManager" />
+        <!-- 资源与权限对应关系 -->
+        <property name="securityMetadataSource" ref="metadataSource" />
+    </bean>
+	
+	<!-- 自定义用户认证 且对密码编码为md5 -->
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider user-service-ref="securityUserDetailService">
+			<security:password-encoder hash="md5"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<!-- 认证过滤器的三大属性 -->
+	<bean id="securityUserDetailService" class="com.ssm.backstage.security.SecurityUserDetailService"/>
+	<bean id="securityAccessDecisionManager" class="com.ssm.backstage.security.SecurityAccessDecisionManager"/>
+	<bean id="metadataSource" class="com.ssm.backstage.security.SecurityInvocationSecurityMetadataSource"/>
+	
+</beans> 

@@ -2,6 +2,9 @@ package com.ssm.backstage.model;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * 
  * @ClassName: User
@@ -10,6 +13,7 @@ import java.io.Serializable;
  * @date 2016年9月2日 下午1:40:25
  *
  */
+@Document(collection="user")
 public class User implements Serializable{
 
 	/**
@@ -20,7 +24,8 @@ public class User implements Serializable{
 	/**
 	 * id
 	 */
-	private Integer id;
+	@Id
+	private String id;
 	
 	/**
 	 * 用户名
@@ -33,15 +38,16 @@ public class User implements Serializable{
 	private String password;
 	
 	/**
-	 * 角色
+	 * 角色 默认为-1 无角色信息
 	 */
-	private Integer roleId;
+	private String roleId = "-1";
 
-	public Integer getId() {
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -61,11 +67,11 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	public Integer getRoleId() {
+	public String getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Integer roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 	

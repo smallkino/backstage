@@ -36,4 +36,30 @@ public interface UserService {
 	 */
 	User getUserByUserNameAndPassword(String username, String password);
 	
+
+	/**
+	 * 
+	 * @Title: registerSubmit
+	 * @Author：xiaoxiaofeng
+	 * @Description: 注册操作
+	 * @param @param username 用户名
+	 * @param @return    注册是否成功 true 成功 false 失败
+	 * @return boolean    返回类型
+	 * @throws
+	 */
+	boolean registerSubmit(String username,String password);
+
+	/**
+	 * 
+	 * @Title: loginSubmit
+	 * @Author：xiaoxiaofeng
+	 * @Description: 登录提交操作
+	 * @param @param request http请求
+	 * @param @param response http响应
+	 * @param @return    js统一回传
+	 * @return ReturnDataFormat<Boolean> 返回类型
+	 * @throws
+	 */
+	boolean loginSubmit(String username, String password);
+	
 }

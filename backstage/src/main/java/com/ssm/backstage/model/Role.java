@@ -3,7 +3,18 @@ package com.ssm.backstage.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Role implements Serializable {
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+/**
+ * 
+ * @ClassName: Role
+ * @Description: 角色model
+ * @author xiaoxiaofeng
+ * @date 2016年9月8日 下午2:15:42
+ *
+ */
+@Document(collection="role")
+public class Role implements Serializable,GrantedAuthority{
 
 	/**
 	* 序列化
@@ -13,7 +24,7 @@ public class Role implements Serializable {
 	/**
 	 * id
 	 */
-	private Integer id;
+	private String id;
 	
 	/**
 	 * 名称
@@ -25,11 +36,12 @@ public class Role implements Serializable {
 	 */
 	private ArrayList<Integer> menuId = new ArrayList<Integer>();
 
-	public Integer getId() {
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -47,6 +59,11 @@ public class Role implements Serializable {
 
 	public void setMenuId(ArrayList<Integer> menuId) {
 		this.menuId = menuId;
+	}
+
+	@Override
+	public String getAuthority() {
+		return null;
 	}
 	
 }
