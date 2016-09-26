@@ -8,8 +8,6 @@
     <link href="${rc.contextPath}/assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FontAwesome Styles-->
     <link href="${rc.contextPath}/assets/css/font-awesome.css" rel="stylesheet" />
-     <!-- Morris Chart Styles-->
-    <link href="${rc.contextPath}/assets/css/custom-styles.css" rel="stylesheet" />
     <style type="text/css">
     	body {
 			color: #000;
@@ -19,63 +17,80 @@
 	</style>
 </head>
 <body style="background-color:#f3f3f3">
+			<input type="hidden" id="gameHost" value="${gameHost?default('')}"/>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" style="top:250px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+			    <div class="modal-dialog" style="width:300px;"> 
+			        <div class="modal-content"> 
+			            <div class="modal-body"><span style="" id="modalText">用户名或密码不能为空11 !</span></div> 
+			            <div class="modal-footer"> 
+			                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+			            </div> 
+			        </div><!-- /.modal-content --> 
+			    </div><!-- /.modal --> 
+			</div>
             <div id="page-inner" style="background-color:#f3f3f3">
 			 <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="page-header">
-                        </h1>
-                    </div>
-                </div> 
-                 <!-- /. ROW  -->
-               
+                <div class="col-md-12">
+                    <h1 class="page-header"></h1>
+                </div>
+            </div> 
             <div class="row">
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                      <div class="panel panel-default">
                         <div class="panel-heading">
-                            	资源管理
+                            	<h2>资源管理</h2>
                         </div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>资源</th>
-                                            <th>操作值</th>
-                                            <th>玩家名称</th>
-                                            <th>操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td>金钱</td>
-                                            <td><input class="form-control" style="width:96px;height:29px;margin-left:-26px"/></td>
-                                            <td><input class="form-control" style="width:96px;height:29px;margin-left:-20px"/></td>
-                                            <td><a href="#" class="btn btn-success btn-sm">增加</a>&nbsp;<a href="#" class="btn btn-danger btn-sm">减少</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>木材</td>
-                                            <td><input class="form-control" style="width:96px;height:29px;margin-left:-26px"/></td>
-                                            <td><input class="form-control" style="width:96px;height:29px;margin-left:-20px"/></td>
-                                            <td><a href="#" class="btn btn-success btn-sm">增加</a>&nbsp;<a href="#" class="btn btn-danger btn-sm">减少</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>钻石</td>
-                                            <td><input class="form-control" style="width:96px;height:29px;margin-left:-26px"/></td>
-                                            <td><input class="form-control" style="width:96px;height:29px;margin-left:-20px"/></td>
-                                            <td><a href="#" class="btn btn-success btn-sm">增加</a>&nbsp;<a href="#" class="btn btn-danger btn-sm">减少</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <div class="table-responsive" style="margin-top:20px">
+	                        <table class="table table-hover">
+		                        <div class="col-lg-6">
+		                        	<form role="form">
+		                        		<div class="form-group">
+				                            <label>服务器</label>
+				                            <select id="resHost" class="form-control">
+				                            </select>
+				                       </div>
+		                        		<div class="form-group">
+		                                   <label>玩家名称</label>
+		                                   <input id="playName" class="form-control">
+		                                   <p class="help-block">不允许有特殊字符且长度在2~15之间</p>
+		                                </div>
+				                        <div class="form-group">
+				                            <label>资源列表</label>
+				                            <select multiple="" id="resList" class="form-control"></select>
+				                       </div>
+				                       <div class="form-group">
+				                            <label>资源类型</label>
+				                            <select id="resType" class="form-control" style="width:30%">
+					                                <option value="1">金币</option>
+					                                <option value="2">木材</option>
+					                                <option value="3">石头</option>
+					                                <option value="4">钢材</option>
+					                                <option value="5">钻石</option>
+					                                <option value="6">EXP</option>
+					                                <option value="7">英雄</option>
+					                                <option value="8">物品</option>
+					                                <option value="9">技能残片</option>
+					                                <option value="10">被动技能</option>
+					                        </select>
+				                       </div>
+				                       <div class="form-group">
+				                       		<p>资源值: </p><input id="resValue" class="form-control" style="width:30%">
+				                       </div>
+				                       <div class="form-group">
+				                       		<p>id: </p><input id="resId" class="form-control" style="width:30%">
+				                       </div>
+				                       <div style="margin-left:123px"><button id="add" type="button" class="btn btn-info btn-sm">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="remove" type="button" class="btn btn-danger btn-sm">撤销</button></div>
+		                               <hr/>
+		                               <div style="margin-left:650px"><button id="submit" type="button" class="btn btn-success">确认并发送设置</button></div>
+			                      	   <hr/>
+			                       </form>
+		                       </div>
+	                       </table>
+                       </div>
                     </div>
                     </div>
-                    <!--End Advanced Tables -->
                 </div>
             </div>
     <!-- JS Scripts-->
@@ -85,9 +100,7 @@
     <script src="${rc.contextPath}/assets/js/bootstrap.min.js"></script>
      <!-- DATA TABLE SCRIPTS -->
     <script src="${rc.contextPath}/assets/js/dataTables/jquery.dataTables.js"></script>
-         <!-- Custom Js -->
-    <script src="${rc.contextPath}/assets/js/custom-scripts.js"></script>
-    
-   
+    <script src="${rc.contextPath}/assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="${rc.contextPath}/js/game/resource.js"></script>
 </body>
 </html>

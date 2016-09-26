@@ -1,26 +1,27 @@
 <beans xmlns="http://www.springframework.org/schema/beans"  
- xmlns:context="http://www.springframework.org/schema/context"  
+ xmlns:context="http://www.springframework.org/schema/context" 
  xmlns:p="http://www.springframework.org/schema/p"  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
  xmlns:mvc="http://www.springframework.org/schema/mvc"  
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xmlns:task="http://www.springframework.org/schema/task" 
  xsi:schemaLocation="http://www.springframework.org/schema/beans  
       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
       http://www.springframework.org/schema/context  
       http://www.springframework.org/schema/context/spring-context.xsd  
+      http://www.springframework.org/schema/task 
+      http://www.springframework.org/schema/task/spring-task-3.0.xsd 
       http://www.springframework.org/schema/mvc  
-      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">  
      
      <!-- 获取属性文件 -->  
      <context:property-placeholder location="classpath:app.properties"/>    
-     <!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射-->
-     <mvc:annotation-driven />  
-     <!-- 检索容器默认servelt用于对静态资源的访问 -->
-     <mvc:default-servlet-handler />
      <!-- 启动包扫描功能，以便注册带有@Controller、@Service、@repository、@Component等注解的类成为spring的bean -->  
      <context:component-scan base-package="com.ssm.backstage" />  
-     
+     <!-- 开启定时任务 -->  
+     <task:annotation-driven/>
+      <!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射-->
+     <mvc:annotation-driven />  
      <!-- redis配置 -->
-     <import resource="./spring-servlet.xml"/>
      <import resource="./spring-redis.xml"/>
      <import resource="./spring-mongodb.xml"/>
 </beans> 

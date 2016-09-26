@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+	<!-- Bootstrap Styles-->
+    <link href="${rc.contextPath}/assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="${rc.contextPath}/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="${rc.contextPath}/assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <style type="text/css">
+    	body {
+			color: #000;
+			font-size: 12px;
+			font-family: "Helvetica Neue",Helvetica,STheiti,微软雅黑,宋体,Arial,Tahoma,sans-serif,serif;
+		}
+	</style>
+</head>
+<body>
+<input type="hidden" id="gameHost" value="${gameHost?default('')}"/>
+			<!-- Modal -->
+		<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" style="top:250px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+		    <div class="modal-dialog" style="width:300px;"> 
+		        <div class="modal-content"> 
+		            <div class="modal-body"><span style="" id="modalText">用户名或密码不能为空11 !</span></div> 
+		            <div class="modal-footer"> 
+		                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+		            </div> 
+		        </div><!-- /.modal-content --> 
+		    </div><!-- /.modal --> 
+		</div>
+		<div class="modal fade" id="myModalDate" data-backdrop="static" tabindex="-1" style="top:250px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+		    <div class="modal-dialog" style="width:500px;"> 
+		        <div class="modal-content" style="width:400px"> 
+		            <div class="modal-body">
+		            	<label for="dtp_input1" class="col-md-2 control-label">发送时间:</label>
+		                <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z"  data-date-format="yyyy-mm-dd hh:ii:ss" data-link-field="dtp_input1">
+		                    <input class="form-control" size="16" style="margin-left:70px;width:200px" type="text" value="" id="time" >
+		                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+							<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+		                </div>
+						<input type="hidden" id="dtp_input1" value="" /><br/>
+		            </div> 
+		            <div class="modal-footer"> 
+		                <button type="button" class="btn btn-default" data-dismiss="modal">确定保存</button> 
+		            </div> 
+		        </div><!-- /.modal-content --> 
+		    </div><!-- /.modal --> 
+		</div>
+		<div class="modal fade" id="myModalTime" data-backdrop="static" tabindex="-1" style="top:250px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+		    <div class="modal-dialog" > 
+		        <div class="modal-content" > 
+		            <div class="modal-body" style="height:130px">
+		            	<select id="timeMailList"  style=" float:left;width:70%" multiple="" class="form-control">
+		            		<#list timeMailList as timeMail>
+								<option value="${timeMail.id}">${timeMail.name}---${timeMail.sendDate}</option>
+							</#list>
+                       </select>
+		            </div> 
+		            <div class="modal-footer" style="height:52px"> 
+	                    <button id="removeMail" type="button" class="btn btn-danger btn-sm">删除邮件</button>&nbsp;&nbsp;&nbsp;
+		            	<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+		            </div> 
+		        </div><!-- /.modal-content --> 
+		    </div><!-- /.modal --> 
+		</div>
+		<div class="modal fade" id="myModalConfim" data-backdrop="static" tabindex="-1" style="top:400px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+		    <div class="modal-dialog" style="width:300px;"> 
+		        <div class="modal-content"> 
+		            <div class="modal-body"><span style="" id="modalText">是否立即发送邮件?</span></div> 
+		            <div class="modal-footer"> 
+		                <button type="button" id="confimSend" class="btn btn-success btn-sm">是</button>&nbsp;&nbsp;&nbsp;
+		                <button type="button" id="cancelSend" class="btn btn-danger btn-sm">否</button> 
+		            </div> 
+		        </div><!-- /.modal-content --> 
+		    </div><!-- /.modal --> 
+		</div>
+        <div id="page-inner" style="background-color:#f3f3f3">
+			 <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header"></h1>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            	<h2>邮件管理</h2>
+                        </div>
+                        <div class="table-responsive" style="margin-top:20px">
+	                        <table class="table table-hover">
+		                        <div class="col-lg-6">
+		                        	<form role="form">
+		                        		<div class="form-group">
+				                            <label>载入历史邮件</label>
+				                            <select id="mailList" class="form-control">
+				                            	<option></option>
+				                            	<#list mailList as mail>
+													<option value="${mail.id}">${mail.name}</option>
+												</#list>
+				                            </select>
+				                       </div>
+		                        		<div class="form-group">
+		                                   <label>标题</label>
+		                                   <input id="title" class="form-control">
+		                                   <p class="help-block">不超过40个字符</p>
+		                                </div>
+				                        <div class="form-group">
+				                            <label>内容</label>
+				                           <textarea class="form-control" id="content" rows="5"></textarea>
+				                           <p class="help-block">不超过500个字符</p>
+				                       </div>
+				                       <div class="form-group">
+				                      		<label>附件</label>
+				                       </div>
+				                       <div class="form-group">
+				                       		<select id="resList"  style=" float:left;width:40%" multiple="" class="form-control">
+                                            </select>
+                                            <div style="float:left;margin-left:12px;width:40%">
+                                            	<select id="resType" class="form-control" style="width:35%">
+					                                <option value="1">金币</option>
+					                                <option value="2">木材</option>
+					                                <option value="3">石头</option>
+					                                <option value="4">钢材</option>
+					                                <option value="5">钻石</option>
+					                                <option value="6">EXP</option>
+					                                <option value="8">物品</option>
+					                                <option value="9">技能残片</option>
+					                                <option value="10">被动技能</option>
+					                            </select>
+					                            <input placeholder="数量" style="width:35%;margin-top:14px" id = "resValue" class="form-control"/>
+					                            <input placeholder="id" style="width:35%;margin-top:14px" id="resId" class="form-control"/>
+					                            <div style="margin-top:12px;margin-left:-6px">
+					                            <button id="add" type="button" class="btn btn-info btn-sm">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                            <button id="remove" type="button" class="btn btn-danger btn-sm">撤销</button>
+	                                            </div>
+                                            </div>
+				                       </div>
+				                       <hr/>
+				                       <div class="form-group" style="float:left;margin-top:20px">
+				                       		<label>发送对象</label>
+				                       		<div>
+					                       		<label class="radio-inline">
+	                                                <input type="radio" name="optionsRadiosInline" id="sendOne" value="false" checked="">单发
+	                                            </label>
+	                                            <label class="radio-inline">
+	                                                <input type="radio" name="optionsRadiosInline" id="sendAll" value="true" >群发
+	                                            </label>
+                                            </div>
+                                            <div style="margin-top:10px">
+                                            	<label>玩家id: </label>
+		                                        <label class="radio-inline">
+						                           <input style="margin-top:10px;width:100px;margin-left:26px" id="playerId" class="form-control">
+					                            </label>
+                                            </div>
+                                            <div style="margin-top:10px">
+                                            	<label>筛选服务器: </label>
+		                                        <label class="radio-inline">
+						                            <select style="width:250px" id="sendHost" class="form-control">
+						                            </select>
+					                            </label>
+                                            </div>
+                                            <div style="margin-top:10px">
+                                            	<label>筛选等级段: </label>
+		                                        <label class="radio-inline">
+						                             <input style="margin-top:10px;width:50px" id="startLevel" class="form-control">
+					                            </label>
+					                            _
+					                            <label class="radio-inline" style="margin-left:-20px">
+						                             <input style="margin-top:10px;width:50px" id="endLevel"   class="form-control">
+					                            </label>
+                                            </div>
+                                            <div style="margin-top:10px">
+                                            	<label>邮件名称: </label>
+		                                        <label class="radio-inline">
+						                             <input style="margin-top:10px;width:180px;margin-left:12px" id="name" class="form-control">
+					                            </label>
+                                            </div>
+				                       </div>
+				                       <div class="form-group" style="float:left;margin-left:665px;margin-top:-219px">
+                                             <button style="margin-top:5px" type="button" id="saveMail"  class="btn btn-primary btn-lg">保存邮件</button><br/>
+                                             <button style="margin-top:5px" type="button" id="sendMailNow" class="btn btn-success btn-lg">立即发送</button><br/>
+                                             <button style="margin-top:5px" type="button" id="sendMailTime" class="btn btn-info btn-lg">定时发送</button><br/>
+				                       		 <button style="margin-top:5px" type="button" id="timeMail"  class="btn btn-danger btn-lg">定时邮件列表</button><br/>
+                                       </div>
+			                       </form>
+		                       </div>
+	                       </table>
+                       </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+ 	<!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="${rc.contextPath}/assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="${rc.contextPath}/assets/js/bootstrap.min.js"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="${rc.contextPath}/assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="${rc.contextPath}/assets/js/bootstrap-datetimepicker.js"></script>
+    <script src="${rc.contextPath}/assets/js/bootstrap-datetimepicker.fr.js"></script>
+    <script src="${rc.contextPath}/js/game/mail.js"></script>
+</body>
+</html>

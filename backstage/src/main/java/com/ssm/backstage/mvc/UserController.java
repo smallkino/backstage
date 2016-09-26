@@ -57,6 +57,24 @@ public class UserController {
 	
 	/**
 	 * 
+	 * @Title: login
+	 * @Author：xiaoxiaofeng
+	 * @Description: 登录页面
+	 * @param @param request http请求
+	 * @param @param response http响应
+	 * @param @return    视图对象
+	 * @return ModelAndView    返回类型
+	 * @throws
+	 */
+	@RequestMapping("logout.html")
+	public ModelAndView loginOut(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView result = new ModelAndView("/user/login");
+		request.getSession().removeAttribute("loginUser");
+		return result;
+	}
+	
+	/**
+	 * 
 	 * @Title: register
 	 * @Author：xiaoxiaofeng
 	 * @Description: 注册页面
@@ -125,7 +143,7 @@ public class UserController {
 			result.setData(flag);
 			if(flag){
 				result.setMessage("登陆成功!");
-				//TODO 将用户名写入session与cookie
+				request.getSession().setAttribute("loginUser", username);
 			}else{
 				result.setMessage("用户名或密码错误!");
 			}

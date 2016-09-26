@@ -1,11 +1,17 @@
 package com.ssm.backstage.mvc;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.ssm.backstage.model.Menu;
+import com.ssm.backstage.mvc.service.MenuService;
 
 /**
  * 
@@ -17,6 +23,12 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class IndexController {
+	
+	/**
+	 * 菜单业务层
+	 */
+	@Autowired
+	private MenuService menuService;
 	
 	/**
 	 * 
@@ -32,6 +44,10 @@ public class IndexController {
 	@RequestMapping("/index.html")
 	public ModelAndView index(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView result = new ModelAndView("index");
+		List<Menu> menuList = menuService.getAllMenu();
+		String username = (String) request.getSession().getAttribute("loginUser");
+		result.addObject("username",username);
+		result.addObject("menuList",menuList);
 		return result;
 	}
 	

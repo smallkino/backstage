@@ -1,6 +1,11 @@
 package com.ssm.backstage.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 
@@ -10,6 +15,7 @@ import java.io.Serializable;
  * @date 2016年9月2日 下午1:52:50
  *
  */
+@Document(collection="menu")
 public class Menu implements Serializable {
 
 	/**
@@ -20,7 +26,8 @@ public class Menu implements Serializable {
 	/**
 	 * id
 	 */
-	private Integer id;
+	@Id
+	private String id;
 	
 	/**
 	 * 名称
@@ -31,12 +38,22 @@ public class Menu implements Serializable {
 	 * 访问路径
 	 */
 	private String path;
-
-	public Integer getId() {
+	
+	/**
+	 * 父级菜单
+	 */
+	private String parentId;
+	
+	/**
+	 * 子菜单
+	 */
+	private List<Menu> menuList = new ArrayList<Menu>();
+	
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -55,5 +72,21 @@ public class Menu implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public List<Menu> getMenuList() {
+		return menuList;
+	}
+
+	public void setMenuList(List<Menu> menuList) {
+		this.menuList = menuList;
+	}
+
 }

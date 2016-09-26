@@ -3,6 +3,7 @@ package com.ssm.backstage.mvc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/resource/")
 public class ResourceController {
 	
+	@Value("${game.ip}")
+	private String gameIp;
+	@Value("${game.port}")
+	private String gamePort;
+	
 	/**
 	 * 
 	 * @Title: index
@@ -33,6 +39,7 @@ public class ResourceController {
 	@RequestMapping("index.html")
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 		ModelAndView result = new ModelAndView("/game/resource");
+		result.addObject("gameHost", gameIp+":"+gamePort);
 		return result;
 	}
 }

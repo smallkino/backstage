@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
 /**
  * 
  * @ClassName: Role
@@ -14,13 +13,12 @@ import org.springframework.security.core.GrantedAuthority;
  *
  */
 @Document(collection="role")
-public class Role implements Serializable,GrantedAuthority{
+public class Role implements Serializable{
 
 	/**
 	* 序列化
 	*/ 
 	private static final long serialVersionUID = 3351270726499820866L;
-
 	/**
 	 * id
 	 */
@@ -30,13 +28,11 @@ public class Role implements Serializable,GrantedAuthority{
 	 * 名称
 	 */
 	private String name;
-	
 	/**
-	 * 角色拥有的权限菜单
+	 * 菜单id 逗号分隔
 	 */
-	private ArrayList<Integer> menuId = new ArrayList<Integer>();
-
-
+	private String menuIds;
+	
 	public String getId() {
 		return id;
 	}
@@ -53,17 +49,12 @@ public class Role implements Serializable,GrantedAuthority{
 		this.name = name;
 	}
 
-	public ArrayList<Integer> getMenuId() {
-		return menuId;
+	public String getMenuIds() {
+		return menuIds;
 	}
 
-	public void setMenuId(ArrayList<Integer> menuId) {
-		this.menuId = menuId;
+	public void setMenuIds(String menuIds) {
+		this.menuIds = menuIds;
 	}
 
-	@Override
-	public String getAuthority() {
-		return null;
-	}
-	
 }
