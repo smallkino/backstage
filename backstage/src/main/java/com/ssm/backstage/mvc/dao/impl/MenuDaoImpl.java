@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.ssm.backstage.model.Menu;
+import com.ssm.backstage.model.Page;
 import com.ssm.backstage.mvc.dao.MenuDao;
 
 /**
@@ -69,7 +70,7 @@ public class MenuDaoImpl implements MenuDao{
 	public void update(Menu menu) {
 		Query query = new Query(Criteria.where("_id").is(menu.getId()));
 		Update update = new Update();
-		update.set("id", menu.getName());
+		update.set("name", menu.getName());
 		update.set("parentId", menu.getParentId());
 		update.set("path", menu.getPath());
 		mongoTemplate.updateFirst(query, update, Menu.class, COLLECTION_NAME);
@@ -103,6 +104,57 @@ public class MenuDaoImpl implements MenuDao{
 	@Override
 	public List<Menu> getAllMenu() {
 		return mongoTemplate.findAll(Menu.class,COLLECTION_NAME);
+	}
+
+	/**
+	 * 
+	 * @Title: getAllMenu
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页查询所有菜单
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<Menu> getAllMenu(Page page) {
+		Query query = new Query();
+		query.skip(page.getStart());
+		query.limit(page.getLength());
+		
+		return mongoTemplate.find(query, Menu.class);
+	}
+
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Menu    返回类型
+	 * @throws
+	 */
+	@Override
+	public Menu getById(String id) {
+		Query query = new Query(Criteria.where("id").is(id));
+		
+		return mongoTemplate.findOne(query, Menu.class);
+	}
+
+	/**
+	 * 
+	 * @Title: deleteById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id删除
+	 * @param @param id    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	@Override
+	public void deleteById(String id) {
+		Query query = new Query(Criteria.where("id").is(id));
+		mongoTemplate.remove(query, Menu.class);
 	}
 	
 }

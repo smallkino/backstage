@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssm.backstage.model.Menu;
+import com.ssm.backstage.model.Page;
 import com.ssm.backstage.mvc.dao.MenuDao;
 import com.ssm.backstage.mvc.service.MenuService;
 
@@ -99,4 +100,75 @@ public class MenuServiceImpl implements MenuService {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @Title: getAllMenu
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页获取所有菜单
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<Menu> getAllMenu(Page page) {
+		List<Menu> menuList = menuDao.getAllMenu(page);
+		for(Menu menu : menuList){
+			if("-1".equals(menu.getParentId())){
+				menu.setParentName("无");
+			}else{
+				for(Menu pmenu : menuDao.getMenuByParentId("-1")){
+					if(pmenu.getId().equals(menu.getParentId())){
+						menu.setParentName(pmenu.getName());
+						break;
+					}
+				}
+			}
+		}
+		return menuList;
+	}
+
+	/**
+	 * 
+	 * @Title: getMenuList
+	 * @Author：xiaoxiaofeng
+	 * @Description: 查询菜单列表
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<Menu> getMenuList() {
+		return menuDao.getAllMenu();
+	}
+
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Menu    返回类型
+	 * @throws
+	 */
+	@Override
+	public Menu getById(String id) {
+		return menuDao.getById(id);
+	}
+
+	/**
+	 * 
+	 * @Title: deleteById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id删除
+	 * @param @param id    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	@Override
+	public void deleteById(String id) {
+		menuDao.deleteById(id);
+	}
+	
 }

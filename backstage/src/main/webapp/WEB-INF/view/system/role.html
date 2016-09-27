@@ -33,7 +33,7 @@
 	<div class="modal fade" id="myModalConfim" data-backdrop="static" tabindex="-1" style="top:300px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
 	    <div class="modal-dialog" style="width:300px;"> 
 	        <div class="modal-content"> 
-	            <div class="modal-body"><span style="" id="modalText">是否删除菜单?</span></div> 
+	            <div class="modal-body"><span style="" id="modalText">是否删除角色?</span></div> 
 	            <div class="modal-footer"> 
 	                <button type="button" id="confimSend" class="btn btn-success btn-sm">是</button>&nbsp;&nbsp;&nbsp;
 	                <button type="button" id="cancelSend" class="btn btn-danger btn-sm" data-dismiss="modal">否</button> 
@@ -46,17 +46,13 @@
 		   <div class="modal-content"> 
 		       <div class="modal-body">
 		       		<div class="form-group">
-                        <label>菜单名称</label>
-                        <input id="menuName" class="form-control">
-                        <input id="menuId" type="hidden">
+                        <label>角色名称</label>
+                        <input id="name" class="form-control">
+                        <input id="id" type="hidden">
                     </div>
                     <div class="form-group">
-                        <label>菜单路径</label>
-                        <input id="menuUrl" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>父级菜单</label>
-                        <select id="parentMenu" multiple="" class="form-control">
+                        <label>角色所有菜单<span style="color:red;"> 按住"ctrl"键选择多项</span></label>
+                        <select id="menuList" multiple="multiple" class="form-control">
                             <option value="-1">无</option>
                             <#list menuList as pmenu>
                             	<option value="${pmenu.id}">${pmenu.name}</option>
@@ -82,27 +78,23 @@
 		                <!-- Advanced Tables -->
 		             <div class="panel panel-default">
 		                <div class="panel-heading">
-		                    	<h2>菜单管理</h2>
+		                    	<h2>角色管理</h2>
 		                </div>
 		                <div style="margin-top:10px;margin-left:10px;">
-		                	<button type="button" class="btn btn-success btn-lg" id="addButton" data-dismiss="modal">新增菜单</button>
+		                	<button type="button" class="btn btn-success btn-lg" id="addButton" data-dismiss="modal">新增角色</button>
 		                </div> 
 		                <div class="table-responsive" style="margin-top:20px">
 		                	<table id="table_local" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
 					             <thead>
 					                 <tr>
-					                     <th>菜单名称</th>
-					                     <th>菜单路径</th>
-					                     <th>父级菜单</th>
+					                     <th>角色名称</th>
 					                     <th>操作</th>
 					                 </tr>
 					             </thead>
 					     
 					             <tfoot>
 					                 <tr>
-					                     <th>菜单名称</th>
-					                     <th>菜单路径</th>
-					                     <th>父级菜单</th>
+					                     <th>角色名称</th>
 					                     <th>操作</th>
 					                 </tr>
 					             </tfoot>
@@ -119,6 +111,6 @@
      <!-- DATA TABLE SCRIPTS -->
     <script src="${rc.contextPath}/assets/js/dataTables/jquery.dataTables.js"></script>
 	<script src="${rc.contextPath}/assets/js/dataTables/dataTables.bootstrap.js"></script>
-	<script src="${rc.contextPath}/js/system/menu.js"></script>
+	<script src="${rc.contextPath}/js/system/role.js"></script>
 </body>
 </html>

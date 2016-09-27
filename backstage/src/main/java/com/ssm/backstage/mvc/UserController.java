@@ -1,5 +1,9 @@
 package com.ssm.backstage.mvc;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,7 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
+import com.ssm.backstage.model.Menu;
+import com.ssm.backstage.model.Page;
 import com.ssm.backstage.model.ReturnDataFormat;
+import com.ssm.backstage.model.Role;
+import com.ssm.backstage.model.User;
+import com.ssm.backstage.mvc.service.RoleService;
 import com.ssm.backstage.mvc.service.UserService;
 
 /**
@@ -36,6 +46,12 @@ public class UserController {
 	 */
 	@Autowired
 	private UserService userService;
+	
+	/**
+	 * 角色相关业务操作
+	 */
+	@Autowired
+	private RoleService roleService;
 	
 	/**
 	 * 
@@ -152,6 +168,113 @@ public class UserController {
 			log.error("登录操作报错 username:{},password{}",username,password,e);
 			result.setSuccess(false);
 			result.setMessage("系统异常");
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @Title: index
+	 * @Author：xiaoxiaofeng
+	 * @Description: 用户管理首页
+	 * @param @param request
+	 * @param @param response
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throws
+	 */
+	@RequestMapping("index.html")
+	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
+		ModelAndView result = new ModelAndView("system/user");
+		List<Role> roleList = roleService.getAllRole();
+		result.addObject("roleList", roleList);
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询角色
+	 * @param @param request
+	 * @param @param response
+	 * @param @return    设定文件
+	 * @return ReturnDataFormat<Boolean>    返回类型
+	 * @throws
+	 */
+	@RequestMapping("getById")
+	@ResponseBody
+	public ReturnDataFormat<User> getById(String id, HttpServletRequest request, HttpServletResponse response){
+		ReturnDataFormat<User> result = new ReturnDataFormat<User>();
+		try {
+			User user = userService.getById(id);
+			result.setData(user);
+			result.setSuccess(true);
+		} catch (Exception e) {
+			log.error("查询用户报错: {}",id,e);
+			result.setSuccess(false);
+			result.setMessage("查询用户报错!");
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @Title: saveOrUpdate
+	 * @Author：xiaoxiaofeng
+	 * @Description: 保存或者更新
+	 * @param @param request
+	 * @param @param response
+	 * @param @return    设定文件
+	 * @return ReturnDataFormat<Boolean>    返回类型
+	 * @throws
+	 */
+	@RequestMapping("saveOrUpdate")
+	@ResponseBody
+	public ReturnDataFormat<Boolean> saveOrUpdate(User user, HttpServletRequest request, HttpServletResponse response){
+		ReturnDataFormat<Boolean> result = new ReturnDataFormat<Boolean>();
+		try {
+			userService.saveOrUpdate(user);
+			result.setSuccess(true);
+		} catch (Exception e) {
+			log.error("保存或更新角色报错: {}",JSONObject.toJSONString(result),e);
+			result.setSuccess(false);
+			result.setMessage("保存或更新角色异常!");
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @Title: getAllUser
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页查询
+	 * @param @param request
+	 * @param @param response
+	 * @param @return    设定文件
+	 * @return ReturnDataFormat<Boolean>    返回类型
+	 * @throws
+	 */
+	@RequestMapping("getAllUser")
+	@ResponseBody
+	public Map<String, Object> getAllUser(HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			int draw = Integer.valueOf(request.getParameter("draw"));
+			int start = Integer.valueOf(request.getParameter("start"));
+			int length = Integer.valueOf(request.getParameter("length"));
+			Page page = new Page();
+			page.setLength(length);
+			page.setStart(start);
+			List<User> userList = userService.getAllUser(page);
+			List<User> list =userService.getAllUser();
+			result.put("draw", draw);
+			result.put("recordsTotal", list.size());
+			result.put("recordsFiltered", list.size());
+			result.put("data", userList);
+		} catch (Exception e) {
+			log.error("查询用户报错: ",e);
+			result.put("error", "查询用户报错");
 		}
 		return result;
 	}

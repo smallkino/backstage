@@ -3,6 +3,7 @@ package com.ssm.backstage.mvc.service;
 import java.util.List;
 
 import com.ssm.backstage.model.Menu;
+import com.ssm.backstage.model.Page;
 
 /**
  * 
@@ -47,4 +48,50 @@ public interface MenuService {
 	 * @throws
 	 */
 	List<Menu> getAllMenu();
+
+	/**
+	 * 
+	 * @Title: getAllMenu
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页获取所有菜单
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	List<Menu> getAllMenu(Page page);
+
+	/**
+	 * 
+	 * @Title: getMenuList
+	 * @Author：xiaoxiaofeng
+	 * @Description: 查询菜单列表
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	List<Menu> getMenuList();
+
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Menu    返回类型
+	 * @throws
+	 */
+	Menu getById(String id);
+
+	/**
+	 * 
+	 * @Title: deleteById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id删除
+	 * @param @param id    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	void deleteById(String id);
 }

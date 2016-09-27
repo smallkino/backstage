@@ -1,15 +1,17 @@
 package com.ssm.backstage.mvc.dao.impl;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import com.ssm.backstage.model.Page;
 import com.ssm.backstage.model.Role;
 import com.ssm.backstage.mvc.dao.RoleDao;
 
@@ -27,7 +29,7 @@ public class RoleDaoImpl implements RoleDao {
 	/**
 	 * 日志
 	 */
-	private static final Logger log = LogManager.getLogger(UserDaoImpl.class);
+	private static final Logger log = LogManager.getLogger(RoleDaoImpl.class);
 	
 	/**
 	 * 集合名称
@@ -42,17 +44,98 @@ public class RoleDaoImpl implements RoleDao {
 
 	/**
 	 * 
-	 * @Title: findAll
+	 * @Title: save
 	 * @Author：xiaoxiaofeng
-	 * @Description: 查询所有角色信息
-	 * @param @return    设定文件
-	 * @return List<Role>    返回所有角色
+	 * @Description: 新增角色
+	 * @param @param menu    设定文件
+	 * @return void    返回类型
 	 * @throws
 	 */
 	@Override
-	public List<Role> findAll() {
-		List<Role> roleList = mongoTemplate.findAll(Role.class, "role");
-		return roleList;
+	public void save(Role role) {
+		mongoTemplate.save(role, COLLECTION_NAME);
+	}
+
+	/**
+	 * 
+	 * @Title: update
+	 * @Author：xiaoxiaofeng
+	 * @Description: 更新菜单
+	 * @param @param menu    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	@Override
+	public void update(Role role) {
+		Query query = new Query(Criteria.where("_id").is(role.getId()));
+		Update update = new Update();
+		update.set("name", role.getName());
+		update.set("menuIds", role.getMenuIds());
+		mongoTemplate.updateFirst(query, update, Role.class, COLLECTION_NAME);
+	}
+
+	/**
+	 * 
+	 * @Title: getAllRole
+	 * @Author：xiaoxiaofeng
+	 * @Description: 查询
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<Role> getAllRole() {
+		return mongoTemplate.findAll(Role.class,COLLECTION_NAME);
+	}
+
+	/**
+	 * 
+	 * @Title: getAllRole
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页查询所有
+	 * @param @return    设定文件
+	 * @return List<Menu>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<Role> getAllRole(Page page) {
+		Query query = new Query();
+		query.skip(page.getStart());
+		query.limit(page.getLength());
+		
+		return mongoTemplate.find(query, Role.class);
+	}
+
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Menu    返回类型
+	 * @throws
+	 */
+	@Override
+	public Role getById(String id) {
+		Query query = new Query(Criteria.where("id").is(id));
+		
+		return mongoTemplate.findOne(query, Role.class);
 	}
 	
+	/**
+	 * 
+	 * @Title: deleteById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id删除
+	 * @param @param id    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	@Override
+	public void deleteById(String id) {
+		Query query = new Query(Criteria.where("id").is(id));
+		mongoTemplate.remove(query, Role.class);
+	}
+
 }

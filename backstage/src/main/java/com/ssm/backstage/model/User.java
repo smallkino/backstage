@@ -38,7 +38,7 @@ public class User implements Serializable{
 	private String password;
 	
 	/**
-	 * 角色 默认为-1 无角色信息
+	 * 角色 默认为-1 无角色信息 0 admin
 	 */
 	private String roleId = "-1";
 

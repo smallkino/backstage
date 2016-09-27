@@ -1,10 +1,14 @@
 package com.ssm.backstage.mvc.service.impl;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssm.backstage.model.Page;
+import com.ssm.backstage.model.Role;
 import com.ssm.backstage.model.User;
 import com.ssm.backstage.mvc.dao.UserDao;
 import com.ssm.backstage.mvc.service.UserService;
@@ -105,5 +109,67 @@ public class UserServiceImpl implements UserService {
 		}
 		return true;
 	}
+
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询
+	 * @param @return    设定文件
+	 * @return List<User>    返回类型
+	 * @throws
+	 */
+	@Override
+	public User getById(String id) {
+		return userDao.getById(id);
+	}
+
+	/**
+	 * 
+	 * @Title: getAllUser
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页查询用户列表
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<User>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<User> getAllUser(Page page) {
+		return userDao.getAllUser(page);
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: getAllUser
+	 * @Author：xiaoxiaofeng
+	 * @Description: 查询用户列表
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<User>    返回类型
+	 * @throws
+	 */
+	@Override
+	public List<User> getAllUser() {
+		return userDao.getAllUser();
+	}
+
+	/**
+	 * 
+	 * @Title: saveOrUpdate
+	 * @Author：xiaoxiaofeng
+	 * @Description: 保存或更新
+	 * @param @param role    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	@Override
+	public void saveOrUpdate(User user) {
+		if(user.getId() != null){
+			userDao.update(user);
+		}
+	}
+
 	
 }

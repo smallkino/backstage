@@ -1,5 +1,9 @@
 package com.ssm.backstage.mvc.service;
 
+import java.util.List;
+
+import com.ssm.backstage.model.Page;
+import com.ssm.backstage.model.Role;
 import com.ssm.backstage.model.User;
 
 /**
@@ -61,5 +65,51 @@ public interface UserService {
 	 * @throws
 	 */
 	boolean loginSubmit(String username, String password);
+	
+	/**
+	 * 
+	 * @Title: getById
+	 * @Author：xiaoxiaofeng
+	 * @Description: 根据id查询
+	 * @param @return    设定文件
+	 * @return List<User>    返回类型
+	 * @throws
+	 */
+	User getById(String id);
+	
+	/**
+	 * 
+	 * @Title: getAllUser
+	 * @Author：xiaoxiaofeng
+	 * @Description: 分页查询用户列表
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<User>    返回类型
+	 * @throws
+	 */
+	List<User> getAllUser(Page page);
+	
+	/**
+	 * 
+	 * @Title: saveOrUpdate
+	 * @Author：xiaoxiaofeng
+	 * @Description: 保存或更新
+	 * @param @param role    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	void saveOrUpdate(User user);
+
+	/**
+	 * 
+	 * @Title: getAllUser
+	 * @Author：xiaoxiaofeng
+	 * @Description: 查询用户列表
+	 * @param @param page
+	 * @param @return    设定文件
+	 * @return List<User>    返回类型
+	 * @throws
+	 */
+	List<User> getAllUser();
 	
 }

@@ -1,49 +1,35 @@
-package com.ssm.backstage.mvc.dao;
+package com.ssm.backstage.mvc.service;
 
 import java.util.List;
 
-import com.ssm.backstage.model.Menu;
 import com.ssm.backstage.model.Page;
 import com.ssm.backstage.model.Role;
 
 /**
  * 
- * @ClassName: RoleDao
- * @Description: 角色操作接口
+ * @ClassName: RoleService
+ * @Description: 角色service接口
  * @author xiaoxiaofeng
- * @date 2016年9月8日 下午3:23:29
+ * @date 2016年9月27日 下午3:31:27
  *
  */
-public interface RoleDao {
-	
+public interface RoleService {
 	/**
 	 * 
-	 * @Title: save
+	 * @Title: saveOrUpdate
 	 * @Author：xiaoxiaofeng
-	 * @Description: 新增菜单
+	 * @Description: 新增及保存
 	 * @param @param menu    设定文件
 	 * @return void    返回类型
 	 * @throws
 	 */
-	void save(Role role);
+	void saveOrUpdate(Role role);
 	
-	/**
-	 * 
-	 * @Title: update
-	 * @Author：xiaoxiaofeng
-	 * @Description: 更新菜单
-	 * @param @param menu    设定文件
-	 * @return void    返回类型
-	 * @throws
-	 */
-	void update(Role role);
-
-
 	/**
 	 * 
 	 * @Title: getAllRole
 	 * @Author：xiaoxiaofeng
-	 * @Description: 查询
+	 * @Description: 首页获取所有权限
 	 * @param @return    设定文件
 	 * @return List<Menu>    返回类型
 	 * @throws
@@ -54,7 +40,7 @@ public interface RoleDao {
 	 * 
 	 * @Title: getAllRole
 	 * @Author：xiaoxiaofeng
-	 * @Description: 分页查询所有菜单
+	 * @Description: 分页获取所有权限
 	 * @param @param page
 	 * @param @return    设定文件
 	 * @return List<Menu>    返回类型
@@ -84,5 +70,4 @@ public interface RoleDao {
 	 * @throws
 	 */
 	void deleteById(String id);
-	
 }

@@ -45,6 +45,11 @@ public class Menu implements Serializable {
 	private String parentId;
 	
 	/**
+	 * 父级菜单名称
+	 */
+	private String parentName;
+	
+	/**
 	 * 子菜单
 	 */
 	private List<Menu> menuList = new ArrayList<Menu>();
@@ -87,6 +92,14 @@ public class Menu implements Serializable {
 
 	public void setMenuList(List<Menu> menuList) {
 		this.menuList = menuList;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 
 }

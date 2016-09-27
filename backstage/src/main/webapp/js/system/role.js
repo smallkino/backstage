@@ -6,33 +6,30 @@ jQuery(function(){
 	jQuery('#confirmAdd').click(function(){
 		jQuery('#addModal').modal('hide');
 		var data={};
-		var menuName = jQuery.trim(jQuery('#menuName').val());
-		var menuUrl = jQuery.trim(jQuery('#menuUrl').val());
-		var parentMenuId = jQuery("#parentMenu").find("option:selected").val();
-		var menuId = jQuery("#menuId").val();
-		if(menuName.length == 0){
-			jQuery('#modalText').text('菜单名不能为空!');
+		var name = jQuery.trim(jQuery('#name').val());
+		var id = jQuery.trim(jQuery('#id').val());
+		var menuList = jQuery("#menuList").val();
+		if(menuList){
+			var menuStr = menuList.join(',');
+			data.menuIds=menuStr;
+		}
+		if(name.length == 0){
+			jQuery('#modalText').text('角色名不能为空!');
 			jQuery('#myModal').modal('show');
 			return;
 		}
-		if(menuName.length > 10){
-			jQuery('#modalText').text('菜单名长度小于等于10!');
+		if(name.length > 10){
+			jQuery('#modalText').text('角色名长度小于等于10!');
 			jQuery('#myModal').modal('show');
 			return;
 		}
-		if(parentMenuId && parentMenuId.length > 0){
-			data.parentId=parentMenuId;
-		}else{
-			data.parentId = "-1";
+		if(id && id.length > 0){
+			data.id=id;
 		}
-		if(menuId && menuId.length > 0){
-			data.id=menuId;
-		}
-		data.name=menuName;
-		data.path=menuUrl;
+		data.name=name;
 		jQuery.ajax({
 			   type: "post", // 或者 "get"
-		       url: "/"+contextPath+"/menu/saveOrUpdate",
+		       url: "/"+contextPath+"/role/saveOrUpdate",
 		       data:data,
 		       success: function(data) {
 		    	   if(data.success){
@@ -50,10 +47,9 @@ jQuery(function(){
 	
 	 //点击新增按钮
 	 jQuery('#addButton').click(function(){
-		 jQuery('#menuName').val('');
-		 jQuery('#menuUrl').val('');
-		 jQuery("#parentMenu").val('');
-		 jQuery('#menuId').val('');
+		 jQuery('#name').val('');
+		 jQuery("#menuList").val('');
+		 jQuery('#id').val('');
 		 jQuery('#addModal').modal('show');
 	 });	
 	 //表格初始化
@@ -64,7 +60,7 @@ jQuery(function(){
 	      "ordering": false,
 	      "type":"post",
 	      "ajax": {
-	         url:"/"+contextPath+"/menu/getAllMenu",
+	         url:"/"+contextPath+"/role/getAllRole",
 	         type:"post"
 	      },
 	      language: {
@@ -81,8 +77,6 @@ jQuery(function(){
 	      },
 	      "columns":[
 	         {"data":"name"},
-	         {"data":"path"},
-	         {"data":"parentName"},
 	         {"data":"id"}
 	       ],
 	      "columnDefs": [
@@ -90,7 +84,7 @@ jQuery(function(){
 	              "render": function ( data, type, row ) {
 	                  return '<button name="updateButton" currentId='+data+'  type="button" class="btn btn-info btn-sm">修改</button>&nbsp;<button name="deleteButton" currentId='+data+' type="button" class="btn btn-info btn-sm">删除</button>';  
 	              },
-	              "targets": 3 }       
+	              "targets": 1 }       
 	       ]
 	   });
 	 
@@ -101,14 +95,16 @@ jQuery(function(){
 			 var id = jQuery(this).attr('currentId');
 			 jQuery.ajax({
 				   type: "post", // 或者 "get"
-			       url: "/"+contextPath+"/menu/getById",
+			       url: "/"+contextPath+"/role/getById",
 			       data:{"id":id},
 			       success: function(resp) {
 			    	   if(resp.success){
-			    		   jQuery('#menuName').val(resp.data.name);
-			    		   jQuery('#menuUrl').val(resp.data.path);
-			    		   jQuery("#parentMenu").val(resp.data.parentId);
-			    		   jQuery('#menuId').val(resp.data.id);
+			    		   jQuery('#name').val(resp.data.name);
+			    		   jQuery('#id').val(resp.data.id);
+			    		   if(resp.data.menuIds && resp.data.menuIds.length > 0){
+			    			   var array = resp.data.menuIds.split(',');
+			    			   jQuery('#menuList').val(array);
+			    		   }
 			    		   jQuery('#addModal').modal('show');
 			    	   }else{
 			    		   jQuery('#modalText').text(resp.message);
@@ -124,7 +120,7 @@ jQuery(function(){
 			 jQuery('#confimSend').click(function(){
 				 jQuery.ajax({
 					   type: "post", // 或者 "get"
-				       url: "/"+contextPath+"/menu/deleteById",
+				       url: "/"+contextPath+"/role/deleteById",
 				       data:{"id":id},
 				       success: function(resp) {
 				    	   jQuery('#myModalConfim').modal('hide');
@@ -138,7 +134,4 @@ jQuery(function(){
 	 });
 	
 });
-function aa(){
-	alert(jQuery('[name="updateButton"]').length);
-}
 
